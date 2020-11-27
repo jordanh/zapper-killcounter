@@ -10,6 +10,10 @@ ZkcDisplayState::ZkcDisplayState(String killCountLabel) {
 
     display.setup();
 
+    R = (ZKC_BLANKING_INTERVALS * log10(2))/(log10(255));
+    lastBlankingChange = 0;
+    blankingStep = 0;
+
     changeToState(stateShowMessage, &defaultMessage);
 }
 
@@ -36,6 +40,7 @@ void ZkcDisplayState::changeToState(zkcDisplayStatesEnum newState, String *msg) 
             break;
     }
     state = newState;
+    resetBlanking();
     lastDisplayStateChange = millis();
 }
 
@@ -63,4 +68,28 @@ void ZkcDisplayState::maybeChangeState() {
             changeToState(stateKillCount);
             break;
     }
+}
+
+void ZkcDisplayState::changeBlanking() {
+    uint8_t brightness = pow(2, (blankingStep / R)) - 1;
+    display.setBlanking(brightness);
+    blankingStep--;
+    lastBlankingChange = millis();
+}
+
+void ZkcDisplayState::resetBlanking() {
+    blankingStep = ZKC_BLANKING_INTERVALS;
+    changeBlanking();
+}
+
+void ZkcDisplayState::maybeChangeBlanking() {
+    if (millis() - lastBlankingChange <=  (displayDelayMs/ZKC_BLANKING_INTERVALS))
+        return; // not time to change the blanking yet
+
+    changeBlanking();
+}
+
+void ZkcDisplayState::tick() {
+    maybeChangeState();
+    maybeChangeBlanking();
 }

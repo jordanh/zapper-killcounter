@@ -35,16 +35,16 @@ void setup() {
 }
 
 void loop() {
-    displayState->maybeChangeState();
+    displayState->tick();
 
     //alternate the PIN between high and low
-    digitalWrite(BLINK_PIN, (blinkState) ? HIGH : LOW);
+    //digitalWrite(BLINK_PIN, (blinkState) ? HIGH : LOW);
 
     //invert the state
-    blinkState = !blinkState;
+    //blinkState = !blinkState;
 
     //wait half a second
-    delay(BLINK_RATE);
+    //delay(BLINK_RATE);
 }
 
 int setDisplay(String str) {

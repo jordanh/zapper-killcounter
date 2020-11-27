@@ -15,6 +15,7 @@ void SLX2016::setup() {
     pinMode(SLX2016_NWR, OUTPUT);
     pinMode(SLX2016_A0, OUTPUT);
     pinMode(SLX2016_A1, OUTPUT);
+    pinMode(SLX2016_BLK, OUTPUT);
     pinMode(SLX2016_NCLR, OUTPUT);
     pinMode(SLX2016_D0, OUTPUT);
     pinMode(SLX2016_D1, OUTPUT);
@@ -47,6 +48,10 @@ void SLX2016::setData(uint8_t data) {
         digitalWrite(SLX2016::data_map[i], (data & 0x1) ? HIGH : LOW);
         data >>= 1;
     }
+}
+
+void SLX2016::setBlanking(uint8_t brightness) {
+    analogWrite(SLX2016_BLK, brightness);
 }
 
 void SLX2016::write(String data) {

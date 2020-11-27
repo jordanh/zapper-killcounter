@@ -14,6 +14,7 @@
 #define SLX2016_D4      D4  // pin 9
 #define SLX2016_D5      D5  // pin 10
 #define SLX2016_D6      D6  // pin 11
+#define SLX2016_BLK     A4  // pin 12
 #define SLX2016_NCLR    A3  // pin 13
 
 #define SLX2016_NUM_A_LINES 2
@@ -30,6 +31,7 @@ class SLX2016 {
         void clear();
         void setAddr(uint8_t addr);
         void setData(uint8_t data);
+        void setBlanking(uint8_t brightness);
         void write(String data);
 };
 
