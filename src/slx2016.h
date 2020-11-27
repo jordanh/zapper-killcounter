@@ -1,5 +1,5 @@
 #ifndef SLX2016_H
-#define SLAX2016_H
+#define SLX2016_H
 
 #include <Arduino.h>
 #include <string.h>

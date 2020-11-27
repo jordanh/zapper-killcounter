@@ -36,17 +36,17 @@ void SLX2016::clear() {
 }
 
 void SLX2016::setAddr(uint8_t addr) {
-    // for (uint8_t i = 0; i < SLX2016_NUM_A_LINES; i++) {
-    //     digitalWrite(SLX2016::addr_map[i], (addr & 0x1) ? HIGH : LOW);
-    //     addr >>= 1;
-    // }
+    for (uint8_t i = 0; i < SLX2016_NUM_A_LINES; i++) {
+        digitalWrite(SLX2016::addr_map[i], (addr & 0x1) ? HIGH : LOW);
+        addr >>= 1;
+    }
 }
 
 void SLX2016::setData(uint8_t data) {
-    // for (uint8_t i = 0; i < SLX2016_NUM_D_LINES; i++) {
-    //     digitalWrite(SLX2016::data_map[i], (data & 0x1) ? HIGH : LOW);
-    //     data >>= 1;
-    // }
+    for (uint8_t i = 0; i < SLX2016_NUM_D_LINES; i++) {
+        digitalWrite(SLX2016::data_map[i], (data & 0x1) ? HIGH : LOW);
+        data >>= 1;
+    }
 }
 
 void SLX2016::write(String data) {
