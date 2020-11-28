@@ -11,7 +11,7 @@
 #define ZKC_MSG_DELAY_MS            5000
 #define ZKC_KILLCOUNT_DELAY_MS      1000
 
-#define ZKC_BLANKING_INTERVALS      24
+#define ZKC_BLANKING_INTERVALS      30
 
 enum zkcDisplayStatesEnum { stateKillCount, stateKillCountLabel, stateShowMessage };
 
@@ -34,7 +34,7 @@ class ZkcDisplayState {
         void maybeChangeState();
         void maybeChangeBlanking();
         void displayMessage(String *msg);
-        void recordKill();
+        void recordKills(uint8_t kills);
         void tick();
         ZkcDisplayState(String killCountLabel);
 };

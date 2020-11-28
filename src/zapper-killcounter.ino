@@ -8,25 +8,37 @@
 #include "slx2016.h"
 #include "zkcDisplayState.h"
 
-#define BLINK_PIN               D7
-#define BLINK_RATE              500
+// From lib/ArduinoStatsd
+#include <Statsd.h>
+
+
+#define DOGSTATSD_HOST              192,168,2,115
+#define DOGSTATSD_PORT              8125
+#define DOGSTATSD_GLOBAL_TAGS       "host=zapper,location=2900_Shorb"
+#define DOGSTATSD_KILLCOUNTER_NAME  "test_counter"
 
 #define KILL_DEBOUNCE_MS        250
 #define KILLS_UNIT_STR          "kilz"
 
+UDP udp;
+Statsd statsd(
+    udp,
+    IPAddress(DOGSTATSD_HOST),
+    DOGSTATSD_PORT,
+    DOGSTATSD_GLOBAL_TAGS
+);
+bool statsdBegan = false;
+
 ZkcDisplayState *displayState;
 
 unsigned long lastKillTime = 0;
-int blinkState = 0;
+uint8_t freshKills = 0;
 
 int setDisplay(String str);
 void counterInterrupt();
 
 void setup() {
     displayState = new ZkcDisplayState( String(KILLS_UNIT_STR) );
-
-    //tell the device we want to write to this pin
-    pinMode(BLINK_PIN, OUTPUT);
 
     Particle.function("setDisplay", setDisplay);
 
@@ -37,14 +49,24 @@ void setup() {
 void loop() {
     displayState->tick();
 
-    //alternate the PIN between high and low
-    //digitalWrite(BLINK_PIN, (blinkState) ? HIGH : LOW);
+    if (!WiFi.ready())
+        statsdBegan = false;
 
-    //invert the state
-    //blinkState = !blinkState;
+    if (!statsdBegan && WiFi.ready()) {
+        statsd.begin();
+        statsd.setTagStyle(TAG_STYLE_DATADOG);
+        statsdBegan = true;
+    }
 
-    //wait half a second
-    //delay(BLINK_RATE);
+    if (!freshKills)
+        return;
+
+    displayState->recordKills(freshKills);    
+
+    if (statsdBegan) {
+        statsd.count("test_counter", freshKills);
+    }
+    freshKills = 0;
 }
 
 int setDisplay(String str) {
@@ -57,5 +79,5 @@ void counterInterrupt() {
     if (killTime - lastKillTime < KILL_DEBOUNCE_MS)
         return;
     lastKillTime = killTime;
-    displayState->recordKill();
+    freshKills++;
 }
