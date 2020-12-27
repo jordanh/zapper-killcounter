@@ -23,7 +23,9 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "system_error": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "array": "cpp",
+        "initializer_list": "cpp"
     },
     "particle.targetDevice": "zapper-killcounter",
     "particle.firmwareVersion": "0.7.0",

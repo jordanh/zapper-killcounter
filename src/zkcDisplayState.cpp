@@ -48,6 +48,11 @@ void ZkcDisplayState::displayMessage(String *msg) {
     changeToState(stateShowMessage, msg);
 }
 
+void ZkcDisplayState::displayMessage(char *msg) {
+    String sMsg = String(msg);
+    changeToState(stateShowMessage, &sMsg);
+}
+
 void ZkcDisplayState::recordKills(uint8_t kills) {
     killCount += kills;
     changeToState(stateKillCount);

@@ -34,6 +34,7 @@ class ZkcDisplayState {
         void maybeChangeState();
         void maybeChangeBlanking();
         void displayMessage(String *msg);
+        void displayMessage(char *msg);
         void recordKills(uint8_t kills);
         void tick();
         ZkcDisplayState(String killCountLabel);

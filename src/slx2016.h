@@ -5,8 +5,8 @@
 #include <string.h>
 
 #define SLX2016_NWR     A2  // pin 1
-#define SLX2016_A0      A0  // pin 2
-#define SLX2016_A1      A1  // pin 3
+#define SLX2016_A0      A1  // pin 2
+#define SLX2016_A1      A0  // pin 3
 #define SLX2016_D0      D0  // pin 5
 #define SLX2016_D1      D1  // pin 6
 #define SLX2016_D2      D2  // pin 7
